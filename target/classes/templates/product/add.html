@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href=" @{/webjars/bootstrap/4.1.3/css/bootstrap.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href=" @{/css/dashboard.css}">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!--引入头部片段-->
+<div th:insert="~{commons/bar::top}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--引入公共片段-->
+        <div th:replace="~{commons/bar::#sidebar(activeUri='products')}"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <!--需要區分是修改還是添加-->
+            <form th:action="@{/product}" method="post" enctype="multipart/form-data">
+                <!--
+                    發送put請求修改商品
+                    1.Spring Mvc中配置HiddenHttpMethodFilter(springboot自動配置好了)
+                    2.頁面創建一個post表單、、
+                    3.創建一個input項，name為_method value值就是請求方式
+                -->
+                <input type="hidden" name="_method" value="put" th:if="${product!=null}"/>
+                <input type="hidden" name="pid" th:if="${product!=null}" th:value="${product.pid}"/>
+                <input type="hidden" name="pimage" th:if="${product!=null}" th:value="${product.pimage}"/>
+                <div class="form-group">
+                    <label>商品名字</label>
+                    <input type="text" class="form-control" placeholder="电视机" name="pname"
+                           th:value="${product!=null}?${product.pname}">
+                </div>
+                <div class="form-group">
+                    <label>市场价</label>
+                    <input type="text" class="form-control" placeholder="100.00" name="market_price"
+                           th:value="${product!=null}?${product.market_price}">
+                </div>
+                <div class="form-group">
+                    <label>售价</label>
+                    <input type="text" class="form-control" placeholder="200.00" name="Shop_price"
+                           th:value="${product!=null}?${product.Shop_price}">
+                </div>
+                <div class="form-group">
+                    <label>是否热门</label>
+                    <select class="form-control" name="Is_hot">
+                        <option th:text="'热门'"
+                                th:value="1" th:selected="${product!=null}?${product.Is_hot==1}"></option>
+                        <option th:text="'不热门'"
+                                th:value="0" th:selected="${product!=null}?${product.Is_hot==0}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>库存</label>
+                    <input type="text" class="form-control" placeholder="1111" name="num"
+                           th:value="${product!=null}?${product.num}">
+                </div>
+                <div class="form-group">
+                    <label>商品描述</label>
+                    <input type="text" class="form-control" placeholder="可以让你感到快乐" name="pdesc"
+                           th:value="${product!=null}?${product.pdesc}">
+                </div>
+                <div class="form-group">
+                    <label>是否下架</label>
+                    <select class="form-control" name="pflag">
+                        <option th:text="'下架'"
+                                th:value="1" th:selected="${product!=null}?${product.pflag==1}"></option>
+                        <option th:text="'上架'"
+                                th:value="0" th:selected="${product!=null}?${product.pflag==0}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>商品类别</label>
+                    <select class="form-control" name="cid">
+                        <option th:each="category:${categorys}" th:text="${category.cname}"
+                                th:value="${category.cid}"
+                                th:selected="${product!=null}?${product.category.cid==category.cid}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>商品日期</label>
+                    <input type="date" class="form-control" placeholder="xxxx/xx/xx" name="pdate"
+                           th:value="${product!=null}?${#dates.format(product.pdate,'yyyy-MM-dd')}">
+                </div>
+                <div class="form-group" th:if="${product==null}">
+                    <label>商品照片</label>
+                    <input type="file" class="form-control" name="file">
+                </div>
+                <button type="submit" class="btn btn-primary" th:text="${product!=null}?'修改':'添加'">添加</button>
+                <a type="submit" class="btn btn-success" th:text="'取消'" th:href="@{/product/allPage}"></a>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+<script type="text/javascript" src="" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" src="" th:src="@{/webjars/bootstrap/4.1.3/js/bootstrap.min.js}"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="" th:src="@{/js/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+</body>
+
+</html>

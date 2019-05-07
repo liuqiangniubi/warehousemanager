@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>end</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.min.js}"></script>
+</head>
+
+<body>
+<div class="wrap">
+    <!--头部-->
+    <div th:replace="~{index::header_desc}"></div>
+    <div th:replace="~{index::header_top}"></div>
+    <div th:replace="~{index::header_bottom}"></div>
+    <!--付款body-->
+
+    <div class="order-info">
+        <div class="msg">
+            <h3>您的订单已提交成功！付款咯～</h3>
+            <p></p>
+            <p class="post-date">成功付款后，7天发货</p>
+        </div>
+        <div class="info">
+            <p>
+                金额：<span class="pay-total">[[${session.sums}]]</span>
+            </p>
+            <p>订单:[[${session.orderNum}]]</p>
+            <p>
+                信息：[[${session.adres.name}]]<span class="line">/</span>
+                [[${session.adres.phone}]]<span class="line">/</span>
+                [[${session.adres.province}]] [[${session.adres.city}]] [[${session.adres.district}]]
+                [[${session.adres.address}]]
+            </p>
+        </div>
+        <div class="icon-box">
+            <i class="iconfont"><img th:src="@{/images/yes_ok.png}"></i>
+        </div>
+    </div>
+    <div class="box-ft clearfix">
+        <input type="submit" class="btn btn-primary" value="付款" id="payBtn">
+        <span class="tip"></span>
+    </div>
+</div>
+<div th:replace="~{index::footer}"></div>
+
+</body>
+</html>

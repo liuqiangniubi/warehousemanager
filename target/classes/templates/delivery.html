@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delivery</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" media="all"/>
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/move-top.js}"></script>
+    <script type="text/javascript" th:src="@{/js/easing.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.accordion.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#posts").accordion({
+                header: "div.tab",
+                alwaysOpen: false,
+                autoheight: false
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <!--引入头部-->
+    <div th:replace="~{index::header_desc}"></div>
+    <div th:replace="~{index::header_top}"></div>
+    <div th:replace="~{index::header_bottom}"></div>
+    <div class="main">
+        <div class="content">
+            <div class="content_top">
+                <div class="back-links">
+                    <p style="width: 300px">
+                        <a th:href="@{/}">首页</a> >>>>
+                        <a th:href="@{/user/categoryProduct/}+${category.cid}" th:text="${category.cname}"
+                           th:if="${category!=null}"></a>
+                        <a th:href="@{/user/selectProduct}" th:text="'全部商品'" th:if="${category==null}"></a>
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="section group">
+                <div class="grid_1_of_4 images_1_of_4" th:each="product:${products}">
+                    <a th:href="@{/user/productDetails/}+${product.pid}"><img th:src="@{/path/}+${product.pimage}"
+                                                                              alt="" width="130px" height="197px"/></a>
+                    <h2 th:text="${product.pdesc}"></h2>
+                    <div class="price-details">
+                        <div class="price-number">
+                            <p><span class="rupees">$[[${product.shop_price}]]</span></p>
+                        </div>
+                        <div class="add-cart">
+                            <h4><a href="javascript:void(0)"
+                                   th:onclick="'javascript:car('+${product.pid}+','+${session.user==null ? 0 : session.user.uid}+')'">加入购物车</a>
+                            </h4>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <script th:src="@{/js/car.js}"></script>
+            <!--<ul class="pagination">-->
+            <!--<li class="page-item"><a class="page-link" th:href="@{/user/selectProduct/}+${pages.prePage}">上一页</a></li>-->
+            <!--<li class="page-item"><a class="page-link" th:href="@{/user/selectProduct/}+${pages.nextPage}">下一页</a></li>-->
+            <!--<li class="page-item"><a class="page-link">显示第[[${pages.startRow}]]到第[[${pages.endRow}]],共[[${pages.size}]]条数据</a></li>-->
+            <!--</ul>-->
+        </div>
+    </div>
+    <div th:replace="~{index::footer}"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $().UItoTop({easingType: 'easeOutQuart'});
+
+        });
+    </script>
+    <a href="#" id="toTop"><span id="toTopHover"> </span></a>
+
+</body>
+</html>
+

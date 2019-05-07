@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href=" @{/webjars/bootstrap/4.1.3/css/bootstrap.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style type="text/css">
+        .pages td {
+            text-align: center;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!--引入头部片段-->
+<div th:insert="~{commons/bar::top}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--引入公共片段-->
+        <div th:replace="~{commons/bar::#sidebar(activeUri='orders')}"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>
+                <a th:href="@{/order/allPage}" class="btn btn-sm btn-primary">返回</a>
+            </h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>商品照片</th>
+                        <th>商品名字</th>
+                        <th>商品描述</th>
+                        <th>售价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orderItem:${orderItems.keySet()}" th:class="pages">
+                        <td>
+                            <img th:src="@{/path/}+${orderItem.pimage}" width="50px" height="70px">
+                        </td>
+                        <td th:text="${orderItem.pname}"></td>
+                        <td th:text="${orderItem.pdesc}"></td>
+                        <td th:text="${orderItem.Shop_price}"></td>
+                        <td th:text="${orderItems.get(orderItem)}"></td>
+                        <td th:text="${orderItem.Shop_price * orderItems.get(orderItem)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.1.3/js/bootstrap.min.js}"></script>
+
+<!-- Icons -->
+<script type="text/javascript" th:src="@{/js/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+<script>
+    $(".delete").click(function () {
+        var url = $(this).attr("url");
+        //删除当前员工
+        $("#del").attr("action", url).submit();
+    });
+</script>
+</body>
+
+</html>
